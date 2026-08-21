@@ -1,0 +1,155 @@
+#:schema https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
+
+console_title_template = "{{ .Shell }} in {{ .Folder }}"
+version = 3
+final_space = true
+async = true
+
+
+[palette]
+# Lumon colour pallet
+clarity = "#f3ffff"
+protocol = "#afcbd6"
+membrane = "#beb780"
+system = "#79a6b9"
+sector = "#20464f"
+archive = "#0e1a26"
+
+
+[var]
+rArrow = ">"
+
+
+
+# === PROMPT ===
+
+# Prev commands
+[transient_prompt]
+  background = "transparent"
+  foreground_templates = [
+    "{{if gt .Code 0}}red{{end}}",
+    "{{if eq .Code 0}}p:system{{end}}"
+  ]
+  template = "{{ .Var.rArrow }} "
+
+
+# Multi-line commands
+[secondary_prompt]
+  foreground = "p:system"
+  template = "{{ .Var.rArrow }}{{ .Var.rArrow }} "
+
+
+
+# == Current command ==
+
+[[blocks]]
+  type = "prompt"
+  alignment = "left"
+  newline = true
+
+  # Session
+  [[blocks.segments]]
+    type = "session"
+    style = "plain"
+    foreground = "p:system"
+    template = "{{ .UserName }}"
+
+  # Path
+  [[blocks.segments]]
+    type = "path"
+    style = "plain"
+    foreground = "p:protocol"
+    template = " {{ .Path }}"
+
+    [blocks.segments.properties]
+      style = "full"
+
+
+  # Nix Shell
+  [[blocks.segments]]
+    type = "text"
+    style = "plain"
+    foreground = "p:clarity"
+    template = "{{if .Env.IN_NIX_SHELL }} 󱄅 󱧘 {{end}}"
+
+    [blocks.segments.if]
+      env_exists = "IN_NIX_SHELL"
+
+
+  # Git
+  [[blocks.segments]]
+    type = "git"
+    style = "plain"
+    foreground = "p:clarity"
+    template = "  {{ .HEAD }}{{if or (.Working.Changed) (.Staging.Changed)}}*{{end}}{{if or (gt .Behind 0) (gt .Ahead 0)}} {{end}}{{if gt .Behind 0 }}⇣{{end}}{{if gt .Ahead 0}}⇡{{end}}"
+
+    [blocks.segments.properties]
+      branch_icon = ""
+      commit_icon = "@"
+      fetch_status = true
+
+
+[[blocks]]
+  type = "prompt"
+  alignment = "left"
+
+  # Root
+  [[blocks.segments]]
+    type = "root"
+    style = "plain"
+    foreground = "p:membrane"
+    template = " 󱅧"
+
+    # SSH
+  [[blocks.segments]]
+    type = "session"
+    style = "plain"
+    foreground = "p:membrane"
+    template = "{{with .SSHSession }} 󰢹{{ end }}"
+
+
+
+[[blocks]]
+  type = "prompt"
+  alignment = "right"
+  overflow = "hide"
+
+  # Execution time
+  [[blocks.segments]]
+    type = "executiontime"
+    style = "plain"
+    foreground = "p:protocol"
+    template = "󱦟 {{ .FormattedMs }} "
+
+    [blocks.segments.properties]
+      threshold = 5000
+      style = "round"
+
+
+  # Shell
+  [[blocks.segments]]
+    type = "shell"
+    style = "plain"
+    foreground = "p:system"
+    template = "{{ .Name }}"
+
+
+
+[[blocks]]
+  type = "prompt"
+  alignment = "left"
+  newline = true
+
+  # Right Arrow
+  [[blocks.segments]]
+    type = "text"
+    style = "plain"
+    foreground_templates = [
+      "{{if gt .Code 0}}red{{end}}",
+      "{{if eq .Code 0}}p:system{{end}}"
+    ]
+    template = "{{ .Var.rArrow }}"
+
+# == Current command ==
+
+# === PROMPT ===
