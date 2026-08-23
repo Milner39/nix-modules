@@ -34,6 +34,10 @@ in
     programs.sway = {
       enable = true;
       package = pkgs_.sway;
+
+      # By default this installs the programs `sway`'s own default config
+      # expects: a lock screen, idle daemon, terminal, menu, screenshot tool
+      # and more.
       extraPackages = [];
     };
 
