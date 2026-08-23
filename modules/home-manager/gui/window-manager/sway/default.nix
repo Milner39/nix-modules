@@ -55,6 +55,19 @@ in
     in {
       inherit menu terminal;
 
+      # === Autostart ===
+      /*
+        Unlike `niri` and `hyprland`, `sway` does not export `WAYLAND_DISPLAY`
+        and `SWAYSOCK` to the systemd & D-Bus activation environments itself.
+
+        Without this UWSM never sees the session come up: it tears the session
+        down after ~30 seconds, and until then anything needing a portal (such
+        as `ghostty`) hangs waiting for `org.freedesktop.portal.Settings`.
+      */
+      startup = [
+        { command = "exec uwsm finalize"; }
+      ];
+
       # === Monitors ===
       output = {
         "*" = {
