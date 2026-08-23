@@ -35,9 +35,6 @@ in
       enable = true;
       package = pkgs_.hyprland;
       portalPackage = pkgs_.xdg-desktop-portal-hyprland;
-
-      # Because NixOS uses SystemD so use UWSM for better support
-      withUWSM = true;
     };
 
     xdg.portal.enable = true;
@@ -48,6 +45,17 @@ in
     environment.systemPackages = [ pkgs_.kitty ];
 
     # === Hyprland ===
+
+
+    # === UWSM ===
+
+    programs.uwsm.waylandCompositors.hyprland = {
+      prettyName = "Hyprland";
+      comment = "Hyprland compositor managed by UWSM";
+      binPath = "/run/current-system/sw/bin/Hyprland";
+    };
+
+    # === UWSM ===
   };
   # === Config ===
 }
