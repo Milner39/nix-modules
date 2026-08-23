@@ -135,6 +135,9 @@ in
       # === Keybindings ===
       modifier = mod;
 
+
+      defaultWorkspace = "workspace number 1";
+
       keybindings = {
         "--no-repeat ${mod}+c" = "kill";
         "${mod}+m" = "exit";
