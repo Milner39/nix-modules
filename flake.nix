@@ -14,6 +14,7 @@
     # Supported systems (alleged)
     systems = [ "x86_64-linux" "aarch64-linux" ];
 
+
     flake = let
 
       # Use `fallback` if `value` is null
@@ -22,22 +23,12 @@
       mkModuleTree = import ./mkModuleTree.nix;
 
 
-      /*
-        Wrap `mkModuleTree` so the result can be imported directly as a module.
-        `config` and `lib` then come from the module system, so consumers do
-        not have to pass `configRoot` or forward their own module args.
-      */
+
       mkModuleTree_ = modulesDir: {
         optionTreeName ? "modules",
         extraSpecialArgs ? {},
 
-        /*
-          How this flake's own `nixpkgs` inputs are instantiated for the
-          modules.
-          Each defaults to `null`, which behaves as: 
-          "match the configuration consuming this tree", so that overlays and 
-          `allowUnfree` carry over without having to be restated here.
-        */
+        # Pkgs options
         system ? null,
         overlays ? null,
         allowUnfree ? null,
