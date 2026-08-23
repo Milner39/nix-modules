@@ -107,7 +107,7 @@ in
           Mod+Q { spawn-sh "${terminalExec}"; }
           Mod+S { spawn-sh "${screenshotExec}"; }
 
-          // Escape an application inhibiting keyboard shortcuts (remote desktop software)
+          // Escape an application inhibiting keyboard shortcuts (remote desktop)
           Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
 
           // Move the focused window between the floating and the tiling layout.
