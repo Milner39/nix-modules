@@ -48,19 +48,6 @@ in
     environment.systemPackages = [ pkgs_.kitty ];
 
     # === Hyprland ===
-
-
-    # === Hyprlock ===
-
-    programs.hyprlock = {
-      enable = true;
-      package = pkgs_.hyprlock;
-    };
-
-    # Let Hyprlock use PAM
-    security.pam.services.hyprlock = {};
-
-    # === Hyprlock ===
   };
   # === Config ===
 }

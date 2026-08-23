@@ -10,6 +10,8 @@
 let
   # Get module configuration
   cfg = moduleConfig;
+
+  pkgs_ = pkgs;
 in
 {
   # === Options ===
@@ -26,8 +28,21 @@ in
   # === Config ===
   config = lib.mkIf cfg.enable {
 
-    # Add X11 fallback
-    environment.systemPackages = [ pkgs.xwayland ];
+    environment.systemPackages = with pkgs_; [
+      # X11 compatibility
+      xwayland
+      xwayland-satellite
+
+      # Wayland inspection/debugging
+      wayland-utils
+      wev
+
+      # Input devices
+      libinput
+
+      # Screens / outputs
+      wlr-randr
+    ];
 
 
     # Tell electron apps to use Wayland
@@ -35,6 +50,29 @@ in
 
     # Prioritise Wayland, fallback to X11
     environment.sessionVariables.QT_QPA_PLATFORM = "wayland;xcb";
+
+
+    # === Hyprlock ===
+
+    programs.hyprlock = {
+      enable = true;
+      package = pkgs_.hyprlock;
+    };
+
+    # Let Hyprlock use PAM
+    security.pam.services.hyprlock = {};
+
+    # === Hyprlock ===
+
+
+    # === UWSM ===
+
+    programs.uwsm = {
+      enable = true;
+      package = pkgs_.uwsm;
+    };
+
+    # === UWSM ===
 
 
     # === NVIDIA Fixes ===
