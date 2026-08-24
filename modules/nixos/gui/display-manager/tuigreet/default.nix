@@ -44,7 +44,15 @@ let
       "--remember"
       "--remember-user-session"
     ]
-    ++ lib.optionals cfg.userMenu [ "--user-menu" ]
+    ++ lib.optionals cfg.userMenu.enable [
+      "--user-menu"
+
+      # `tuigreet` picks the menu's entries straight out of `/etc/passwd` by
+      # UID, so the bounds are the only way to keep service accounts
+      # (`nixbld*` in particular) out of it
+      "--user-menu-min-uid ${toString cfg.userMenu.minUid}"
+      "--user-menu-max-uid ${toString cfg.userMenu.maxUid}"
+    ]
     ++ lib.optionals (cfg.theme != null) [ "--theme '${cfg.theme}'" ]
   );
 in
@@ -95,10 +103,26 @@ in
       type = lib.types.bool;
     };
 
-    "userMenu" = lib.mkOption {
+    "userMenu"."enable" = lib.mkOption {
       description = "Pick a user from a menu instead of typing a username.";
       default = true;
       type = lib.types.bool;
+    };
+
+    "userMenu"."minUid" = lib.mkOption {
+      description = "Lowest UID to show in the user menu.";
+      default = 1000;
+      type = lib.types.int;
+    };
+
+    "userMenu"."maxUid" = lib.mkOption {
+      description = ''
+        Highest UID to show in the user menu.
+        Defaults to just below the `nixbld` range, since Nix's build users are
+        ordinary `/etc/passwd` entries and would otherwise fill the menu.
+      '';
+      default = configRoot.ids.uids.nixbld - 1;
+      type = lib.types.int;
     };
 
     "theme" = lib.mkOption {
