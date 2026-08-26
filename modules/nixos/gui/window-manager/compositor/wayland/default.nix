@@ -17,7 +17,20 @@ in
   # === Options ===
   options = {
     "enable" = lib.mkOption {
-      description = "Whether to enable general `wayland` settings.";
+      description = "Whether to enable shared `wayland` settings.";
+      default = false;
+      type = lib.types.bool;
+    };
+
+    "tools"."enable" = lib.mkOption {
+      description = ''
+        Enable Wayland inspection and diagnostic tools:
+        `wayland-info` (from `wayland-utils`), for compositor capabilities,
+        `wev`, for input events,
+        `libinput`, for `debug-events` and `list-devices`,
+        `wlr-randr`, for output layout,
+        `xwayland-satellite`, rootless X for compositors without their own.
+      '';
       default = false;
       type = lib.types.bool;
     };
@@ -27,23 +40,23 @@ in
 
   # === Config ===
   config = lib.mkIf cfg.enable {
+    # === Wayland ===
 
-    environment.systemPackages = with pkgs_; [
-      # X11 compatibility
-      xwayland
-      xwayland-satellite
+     # X11 compatibility
+    programs.xwayland = {
+      enable = true;
+      package = pkgs_.xwayland.override {
+        inherit (configRoot.programs.xwayland) defaultFontPath;
+      };
+    };
 
-      # Wayland inspection/debugging
+    environment.systemPackages = lib.optionals cfg.tools.enable (with pkgs_; [
       wayland-utils
       wev
-
-      # Input devices
       libinput
-
-      # Screens / outputs
       wlr-randr
-    ];
-
+      xwayland-satellite
+    ]);
 
     # Tell electron apps to use Wayland
     environment.sessionVariables.NIXOS_OZONE_WL = "1";
@@ -51,18 +64,7 @@ in
     # Prioritise Wayland, fallback to X11
     environment.sessionVariables.QT_QPA_PLATFORM = "wayland;xcb";
 
-
-    # === Hyprlock ===
-
-    programs.hyprlock = {
-      enable = true;
-      package = pkgs_.hyprlock;
-    };
-
-    # Let Hyprlock use PAM
-    security.pam.services.hyprlock = {};
-
-    # === Hyprlock ===
+    # === Wayland ===
 
 
     # === UWSM ===
@@ -73,6 +75,20 @@ in
     };
 
     # === UWSM ===
+
+
+    # === Hyprlock ===
+
+    # programs.hyprlock = {
+    #   enable = true;
+    #   package = pkgs_.hyprlock;
+    # };
+    #
+    # # Let Hyprlock use PAM
+    # security.pam.services.hyprlock = {};
+
+    # === Hyprlock ===
+
 
 
     # === NVIDIA Fixes ===
