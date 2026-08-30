@@ -33,23 +33,16 @@ in
 
     environment.systemPackages = with pkgs_; [
       niri
-
-      # Include Niri's default terminal so default shortcut works
-      alacritty
     ];
 
-    xdg.portal = {
-      enable = true;
+    xdg.portal.extraPortals = with pkgs_; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-gnome
+    ];
 
-      extraPortals = with pkgs_; [
-        xdg-desktop-portal-gtk
-        xdg-desktop-portal-gnome
-      ];
-
-      config.common = {
-        default = [ "gtk" ];
-        "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
-      };
+    xdg.portal.config.niri = {
+      default = [ "gtk" ];
+      "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
     };
 
     # === Niri ===

@@ -64,6 +64,8 @@ in
     # Prioritise Wayland, fallback to X11
     environment.sessionVariables.QT_QPA_PLATFORM = "wayland;xcb";
 
+    xdg.portal.enable = true;
+
     # === Wayland ===
 
 

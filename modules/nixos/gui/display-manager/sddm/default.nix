@@ -12,6 +12,11 @@ let
   cfg = moduleConfig;
 
   pkg = pkgs.kdePackages.sddm;
+
+
+  sessionsDirRoot = configRoot.modules.gui.display-manager.sessions.dir;
+  wSessionsDir = "${sessionsDirRoot}/share/wayland-sessions";
+  xSessionsDir = "${sessionsDirRoot}/share/xsessions";
 in
 {
   # === Options ===
@@ -30,6 +35,11 @@ in
     services.displayManager.sddm = {
       enable = true;
       package = pkg;
+
+      settings = {
+        Wayland.SessionDir = wSessionsDir;
+        X11.SessionDir = xSessionsDir;
+      };
 
       # # Enable support for Wayland
       # wayland.enable = true;

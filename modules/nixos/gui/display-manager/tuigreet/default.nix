@@ -14,15 +14,22 @@ let
   pkgs_ = pkgs;
 
 
+  sessionsRootDir = configRoot.modules.gui.display-manager.sessions.dir;
 
-  # Every session registered with NixOS
-  # (`services.displayManager.sessionPackages`) ends up here, including the
-  # UWSM entries created by the window manager modules
-  sessionsDir = "${configRoot.services.displayManager.sessionData.desktops}/share/wayland-sessions";
+  sessionsDir = "${sessionsRootDir}/share/wayland-sessions";
+  xSessionsDir = "${sessionsRootDir}/share/xsessions";
 
-  # NOTE: X11 sessions (`--xsessions`) are deliberately not passed.
-  # `tuigreet` launches them through `--xsession-wrapper`, which defaults to
-  # `startx /usr/bin/env` and does not exist on NixOS.
+
+  /*
+    `greetd` is a TTY greeter, so unlike `sddm` it never starts an X server
+    itself. X11 sessions therefore have to be launched through `startx`, which
+    is what `--xsession-wrapper` is for.
+  */
+  xSessionWrapper =
+    if cfg.xsessions.wrapper != null then
+      cfg.xsessions.wrapper
+    else
+      "${pkgs_.xinit}/bin/startx /usr/bin/env";
 
 
   # Build the greeter command line
@@ -34,6 +41,10 @@ let
 
       "--power-shutdown '/run/current-system/sw/bin/systemctl poweroff'"
       "--power-reboot '/run/current-system/sw/bin/systemctl reboot'"
+    ]
+    ++ lib.optionals cfg.xsessions.enable [
+      "--xsessions ${xSessionsDir}"
+      "--xsession-wrapper '${xSessionWrapper}'"
     ]
     ++ lib.optionals cfg.time.enable [ "--time" ]
     ++ lib.optionals (cfg.time.format != null) [ "--time-format '${cfg.time.format}'" ]
@@ -134,6 +145,28 @@ in
       type = lib.types.nullOr lib.types.str;
       example = "border=magenta;button=yellow;container=black;input=red";
     };
+
+    "xsessions"."enable" = lib.mkOption {
+      description = ''
+        Offer X11 sessions alongside the Wayland ones.
+
+        Pulls in the X server, since `greetd` has none of its own, and enables
+        `services.xserver.displayManager.startx` for the `startx` that
+        `--xsession-wrapper` needs.
+      '';
+      default = false;
+      type = lib.types.bool;
+    };
+
+    "xsessions"."wrapper" = lib.mkOption {
+      description = ''
+        Command `tuigreet` prefixes to an X11 session's `Exec` line.
+        `null` uses `startx` with the system's `/usr/bin/env`.
+      '';
+      default = null;
+      type = lib.types.nullOr lib.types.str;
+      example = "startx /usr/bin/env";
+    };
   };
   # === Options ===
 
@@ -153,6 +186,12 @@ in
 
       # Since `tuigreet` is text based
       useTextGreeter = true;
+    };
+
+
+    services.xserver = lib.mkIf cfg.xsessions.enable {
+      enable = true;
+      displayManager.startx.enable = true;
     };
   };
   # === Config ===

@@ -37,13 +37,6 @@ in
       portalPackage = pkgs_.xdg-desktop-portal-hyprland;
     };
 
-    xdg.portal.enable = true;
-    xdg.portal.extraPortals = [];
-
-
-    # Include Hyprland's default terminal so default shortcut works
-    environment.systemPackages = [ pkgs_.kitty ];
-
     # === Hyprland ===
 
 
