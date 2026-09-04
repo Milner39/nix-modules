@@ -18,14 +18,14 @@ let
     Priority for every value this profile sets.
 
     It has to beat `lib.mkDefault` (1000), because the modules this profile is
-    arguing with use exactly that:
+    overriding uses 1000 priority:
     `services/misc/graphical-desktop.nix` sets `services.speechd.enable = lib.mkDefault true`,
     `services/networking/networkmanager.nix` sets `networking.modemmanager.enable = lib.mkDefault true`
-    A `lib.mkDefault false` here does not lose gracefully to those.
-    It conflicts with them at equal priority and fails evaluation.
+    A `lib.mkDefault false` conflicts with them at equal priority and 
+    fails evaluation.
 
     It must still lose to an ordinary assignment (100), so that a host
-    overriding the underlying NixOS option directly wins without reaching for
+    overriding the underlying NixOS option directly wins without using
     `lib.mkForce`.
   */
   profilePriority = 900;
@@ -42,8 +42,7 @@ let
     "enable everything".
 
     A host therefore never has to use `keep.*` at all. Setting the underlying
-    NixOS option directly also wins, the same escape hatch the upstream
-    profiles in `nixpkgs/nixos/modules/profiles` rely on.
+    NixOS option directly also wins.
   */
   stripTo = kept: value: lib.mkIf (!kept) (lib.mkOverride profilePriority value);
   disable = kept: stripTo kept false;
