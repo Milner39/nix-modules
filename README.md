@@ -1,5 +1,9 @@
 # nix-modules
 
+[![Nix Flake](https://img.shields.io/badge/nix-flake-5277c3?logo=nixos&logoColor=white)](https://nixos.org)
+
+## What is this?
+
 Shared NixOS and Home Manager modules, exposed as option trees built from this
 repository's directory structure.
 
