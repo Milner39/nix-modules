@@ -215,3 +215,10 @@ and so on
 Branches are mutable, so fixes can be backported to a line and picked up with
 `nix flake update`. Pin to an exact point with a tag if a configuration needs
 one; day to day, `flake.lock` already provides that.
+
+## License
+
+Copyright © 2026 Finn Milner.
+
+Licensed under the [Apache License 2.0](LICENSE.md).
+
