@@ -120,7 +120,7 @@ modules/nixos/gui/window-manager/niri/default.nix
   -> modules.gui.window-manager.niri.*
 ```
 
-- A directory's `default.nix` declares the options and config for that node.
+- A directory's `default.nix` declares the options and config for that module.
 - `default.nix` is optional. Directories without one simply group their
   children, and declare nothing themselves.
 - Directories whose name begins with `_` are skipped. Use them
@@ -162,14 +162,16 @@ in
 }
 ```
 
-Options are declared **relative to the module's own node**, not the full path.
+Options are declared **relative to the module itself**, not the full path.
 The `enable` option above becomes `modules.<path to this directory>.enable`.
 
 Arguments available to every module:
 
 | Argument | Meaning |
 | --- | --- |
-| `moduleConfig` | The configuration set for this node. Usually aliased to `cfg`. |
+| `moduleConfig` | The configuration set for this module. Usually aliased to `cfg`. |
+| `moduleTreeConfig` | The configuration of the whole tree, for reading other modules. |
+| `optionTreeName` | The namespace the tree is declared under, for setting other modules' options. |
 | `configRoot` | The root `config` of the whole configuration. |
 | `lib` | The consuming configuration's `lib`, including any extensions it has made. |
 | `pkgs`, `pkgs-unstable` | Package sets built from this flake's nixpkgs inputs. |
@@ -177,6 +179,10 @@ Arguments available to every module:
 Anything the consumer supplies through `specialArgs` or `extraSpecialArgs` is
 also available. Read configuration from `moduleConfig` rather than
 `configRoot`, as the latter risks infinite recursion.
+
+A module reaching another module in the tree goes through `moduleTreeConfig`
+and `optionTreeName`, never a literal `modules.*`, so that a consumer renaming
+the namespace with `optionTreeName` does not break it:
 
 Every `default.nix` in the tree is imported and applied whenever the tree is
 imported, regardless of what is enabled. A missing argument is therefore an

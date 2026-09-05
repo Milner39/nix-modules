@@ -29,6 +29,15 @@ let
   # === Args ===
 
 
+  /*
+    The whole tree's configuration.
+
+    Modules reading or setting another module's options go through this and
+    `optionTreeName`, rather than naming `${optionTreeName}` literally, so that
+    a consumer renaming the namespace does not break them.
+  */
+  treeConfig = configRoot.${optionTreeName} or {};
+
 
   # === Functions ===
 
@@ -70,7 +79,10 @@ let
       moduleArgs = moduleArgs // {
         # Pass the configuration for this module tree directly
         # avoiding infinite recursion by not reading from final config
-        moduleConfig = lib.attrByPath path {} configRoot.${optionTreeName} or {};
+        moduleConfig = lib.attrByPath path {} treeConfig;
+
+        moduleTreeConfig = treeConfig;
+        inherit optionTreeName;
       };
     };
 

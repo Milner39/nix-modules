@@ -1,6 +1,7 @@
 {
   configRoot,
   moduleConfig,
+  optionTreeName,
   lib,
   pkgs,
   pkgs-unstable,
@@ -27,7 +28,7 @@ in
 
   # === Config ===
   config = lib.mkIf cfg.enable {
-    modules.gui.window-manager.compositor.wayland.enable = true;
+    ${optionTreeName}.gui.window-manager.compositor.wayland.enable = true;
 
     # === Hyprland ===
 

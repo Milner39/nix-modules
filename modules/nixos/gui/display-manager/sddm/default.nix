@@ -1,6 +1,7 @@
 {
   configRoot,
   moduleConfig,
+  moduleTreeConfig,
   lib,
   pkgs,
   pkgs-unstable,
@@ -14,7 +15,7 @@ let
   pkg = pkgs.kdePackages.sddm;
 
 
-  sessionsDirRoot = configRoot.modules.gui.display-manager.sessions.dir;
+  sessionsDirRoot = moduleTreeConfig.gui.display-manager.sessions.dir;
   wSessionsDir = "${sessionsDirRoot}/share/wayland-sessions";
   xSessionsDir = "${sessionsDirRoot}/share/xsessions";
 in
