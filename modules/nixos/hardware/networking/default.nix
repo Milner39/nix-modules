@@ -11,6 +11,11 @@
 let
   # Get module configuration
   cfg = moduleConfig;
+
+
+  # A backend is managing the links, but no wireless module registered
+  noWireless = cfg.backends != [] && cfg.wireless.backend == null;
+  noWirelessPriority = 90;
 in
 {
   # === Options ===
@@ -44,6 +49,14 @@ in
         '';
       }
     ];
+
+
+    networking = lib.mkIf noWireless {
+      wireless.enable = lib.mkOverride noWirelessPriority false;
+
+      # Tell `networkmanager` to ignore wifi
+      networkmanager.unmanaged = [ "type:wifi" ];
+    };
   };
   # === Config ===
 }

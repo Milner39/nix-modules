@@ -26,8 +26,9 @@ in
       description = ''
         Whether to enable `NetworkManager` as the networking backend.
 
-        This drives wireless itself, through `wpa_supplicant` by default. 
-        Enabling a wireless module switches it to that daemon instead.
+        Wireless is left to a module under `wireless`. Without one the
+        `networking` module turns it off, rather than `NetworkManager` falling
+        back to `wpa_supplicant`.
       '';
       default = false;
       type = lib.types.bool;
@@ -43,7 +44,7 @@ in
       package = pkgs_.networkmanager;
 
 
-      # `wpa_supplicant by default`
+      # Point at whichever wireless module registered
       wifi.backend = lib.mkIf (wirelessBackend != null) (wirelessBackend);
       wifi.powersave = false;
     };
