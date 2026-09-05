@@ -10,6 +10,8 @@
 let
   # Get module configuration
   cfg = moduleConfig;
+
+  firmwarePriority = 500;
 in
 {
   # === Options ===
@@ -52,8 +54,15 @@ in
     */
     hardware.wirelessRegulatoryDatabase = true;
 
-    # `mkIf` so turning it off leaves the option to whatever else sets it
-    hardware.enableRedistributableFirmware = lib.mkIf cfg.firmware.enable true;
+    /*
+      `mkIf` so turning it off leaves the option to whatever else sets it.
+
+      Priority beats the `minimal` profile pinning firmware off at 900, while
+      still losing to a host setting the NixOS option itself, the way a board
+      whose firmware comes from `nixos-hardware` does.
+    */
+    hardware.enableRedistributableFirmware =
+      lib.mkIf cfg.firmware.enable (lib.mkOverride firmwarePriority true);
   };
   # === Config ===
 }
