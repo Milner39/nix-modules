@@ -3,7 +3,7 @@
 {
   configRoot,
   specialArgs,
-  optionTreeName ? "modules",
+  moduleTreeName ? "modules",
   modulesDir,
   ...
 } @ args:
@@ -14,11 +14,11 @@ let
   # `configRoot`
   # A reference to the root `config` object of the whole configuration
 
-  # `optionTreeName`
+  # `moduleTreeName`
   # Name for the "root" of the option tree
   # All module options will be available under this name space
   # Example: `{modulesDir}/programs/shells/bash`
-  # Becomes: `${optionTreeName}.programs.shells.bash`
+  # Becomes: `${moduleTreeName}.programs.shells.bash`
 
   # `modulesDir`
   # Path to the directory to traverse and build the option tree from
@@ -33,10 +33,10 @@ let
     The whole tree's configuration.
 
     Modules reading or setting another module's options go through this and
-    `optionTreeName`, rather than naming `${optionTreeName}` literally, so that
+    `moduleTreeName`, rather than naming `${moduleTreeName}` literally, so that
     a consumer renaming the namespace does not break them.
   */
-  treeConfig = configRoot.${optionTreeName} or {};
+  treeConfig = configRoot.${moduleTreeName} or {};
 
 
   # === Functions ===
@@ -82,7 +82,7 @@ let
         moduleConfig = lib.attrByPath path {} treeConfig;
 
         moduleTreeConfig = treeConfig;
-        inherit optionTreeName;
+        inherit moduleTreeName;
       };
     };
 
@@ -140,7 +140,7 @@ let
 
 in
 {
-  options.${optionTreeName} = result.options;
+  options.${moduleTreeName} = result.options;
   config = result.config;
   imports = result.imports;
 }

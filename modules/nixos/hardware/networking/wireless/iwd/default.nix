@@ -2,7 +2,7 @@
   configRoot,
   moduleConfig,
   moduleTreeConfig,
-  optionTreeName,
+  moduleTreeName,
   lib,
   pkgs,
   pkgs-unstable,
@@ -39,7 +39,7 @@ in
     };
 
     # Register with the `wireless` module
-    ${optionTreeName}.hardware.networking.wireless.backend = "iwd";
+    ${moduleTreeName}.hardware.networking.wireless.backend = "iwd";
   };
   # === Config ===
 }

@@ -2,7 +2,7 @@
   configRoot,
   moduleConfig,
   moduleTreeConfig,
-  optionTreeName,
+  moduleTreeName,
   lib,
   pkgs,
   pkgs-unstable,
@@ -49,7 +49,7 @@ in
     };
 
     # Register with the `networking` module
-    ${optionTreeName}.hardware.networking.backends = [ "networkmanager" ];
+    ${moduleTreeName}.hardware.networking.backends = [ "networkmanager" ];
   };
   # === Config ===
 }

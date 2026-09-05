@@ -1,7 +1,7 @@
 {
   configRoot,
   moduleConfig,
-  optionTreeName,
+  moduleTreeName,
   lib,
   pkgs,
   pkgs-unstable,
@@ -28,7 +28,7 @@ in
 
   # === Config ===
   config = lib.mkIf cfg.enable {
-    ${optionTreeName}.gui.window-manager.compositor.wayland.enable = true;
+    ${moduleTreeName}.gui.window-manager.compositor.wayland.enable = true;
 
     # === Niri ===
 

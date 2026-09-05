@@ -73,7 +73,7 @@ Every attribute is optional.
 
 | Attribute | Default | Meaning |
 | --- | --- | --- |
-| `optionTreeName` | `"modules"` | Namespace the option tree is declared under. |
+| `moduleTreeName` | `"modules"` | Namespace the option tree is declared under. |
 | `extraSpecialArgs` | `{ }` | Extra arguments passed to every module. Overrides anything of the same name. |
 | `system` | inherited | Platform to instantiate nixpkgs for. |
 | `overlays` | inherited | Overlays to apply. |
@@ -87,7 +87,7 @@ To rename the namespace:
 
 ```nix
 (inputs.nix-modules.lib.nixosModuleTree {
-  optionTreeName = "myModules";
+  moduleTreeName = "myModules";
 })
 ```
 
@@ -171,7 +171,7 @@ Arguments available to every module:
 | --- | --- |
 | `moduleConfig` | The configuration set for this module. Usually aliased to `cfg`. |
 | `moduleTreeConfig` | The configuration of the whole tree, for reading other modules. |
-| `optionTreeName` | The namespace the tree is declared under, for setting other modules' options. |
+| `moduleTreeName` | The namespace the tree is declared under, for setting other modules' options. |
 | `configRoot` | The root `config` of the whole configuration. |
 | `lib` | The consuming configuration's `lib`, including any extensions it has made. |
 | `pkgs`, `pkgs-unstable` | Package sets built from this flake's nixpkgs inputs. |
@@ -181,8 +181,8 @@ also available. Read configuration from `moduleConfig` rather than
 `configRoot`, as the latter risks infinite recursion.
 
 A module reaching another module in the tree goes through `moduleTreeConfig`
-and `optionTreeName`, never a literal `modules.*`, so that a consumer renaming
-the namespace with `optionTreeName` does not break it:
+and `moduleTreeName`, never a literal `modules.*`, so that a consumer renaming
+the namespace with `moduleTreeName` does not break it:
 
 Every `default.nix` in the tree is imported and applied whenever the tree is
 imported, regardless of what is enabled. A missing argument is therefore an

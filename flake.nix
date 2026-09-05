@@ -25,7 +25,7 @@
 
 
       mkModuleTree_ = modulesDir: {
-        optionTreeName ? "modules",
+        moduleTreeName ? "modules",
         extraSpecialArgs ? {},
 
         # Pkgs options
@@ -42,7 +42,7 @@
         };
 
       in mkModuleTree { inherit lib; } {
-        inherit modulesDir optionTreeName;
+        inherit modulesDir moduleTreeName;
 
         configRoot = config;
 

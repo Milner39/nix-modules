@@ -1,7 +1,7 @@
 {
   configRoot,
   moduleConfig,
-  optionTreeName,
+  moduleTreeName,
   lib,
   pkgs,
   pkgs-unstable,
@@ -40,7 +40,7 @@ in
           Only one networking backend can be enabled at a time, but these are:
           ${lib.concatStringsSep ", " cfg.backends}.
 
-          Pick one under `${optionTreeName}.hardware.networking`.
+          Pick one under `${moduleTreeName}.hardware.networking`.
         '';
       }
     ];

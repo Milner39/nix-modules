@@ -1,7 +1,7 @@
 {
   configRoot,
   moduleConfig,
-  optionTreeName,
+  moduleTreeName,
   lib,
   pkgs,
   pkgs-unstable,
@@ -78,7 +78,7 @@ in
     };
 
     # Register with the `networking` module
-    ${optionTreeName}.hardware.networking.backends = [ "networkd" ];
+    ${moduleTreeName}.hardware.networking.backends = [ "networkd" ];
   };
   # === Config ===
 }
