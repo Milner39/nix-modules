@@ -74,7 +74,7 @@ in
       {
         assertion = backends != [];
         message = ''
-          `direct-link` configures the enabled networking backend, and no
+          `directLink` configures the enabled networking backend, and no
           backend is enabled.
 
           Enable one under `${moduleTreeName}.networking.backend`.
