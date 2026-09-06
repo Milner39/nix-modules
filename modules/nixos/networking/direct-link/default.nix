@@ -15,7 +15,7 @@ let
 
 
   # Registered by whichever backend module is enabled, `[]` if none is
-  backends = moduleTreeConfig.hardware.networking.backends;
+  backends = moduleTreeConfig.networking.backend.enabled;
 
   usingNetworkd        =  lib.elem "networkd" backends;
   usingNetworkManager  =  lib.elem "networkmanager" backends;
@@ -77,7 +77,7 @@ in
           `direct-link` configures the enabled networking backend, and no
           backend is enabled.
 
-          Enable one under `${moduleTreeName}.hardware.networking`.
+          Enable one under `${moduleTreeName}.networking.backend`.
         '';
       }
     ];

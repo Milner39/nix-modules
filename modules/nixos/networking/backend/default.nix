@@ -11,16 +11,11 @@
 let
   # Get module configuration
   cfg = moduleConfig;
-
-
-  # A backend is managing the links, but no wireless module registered
-  noWireless = cfg.backends != [] && cfg.wireless.backend == null;
-  noWirelessPriority = 90;
 in
 {
   # === Options ===
   options = {
-    "backends" = lib.mkOption {
+    "enabled" = lib.mkOption {
       description = ''
         Names of the enabled IP configuration backends.
 
@@ -40,23 +35,15 @@ in
   config = {
     assertions = [
       {
-        assertion = (lib.length cfg.backends) <= 1;
+        assertion = (lib.length cfg.enabled) <= 1;
         message = ''
           Only one networking backend can be enabled at a time, but these are:
-          ${lib.concatStringsSep ", " cfg.backends}.
+          ${lib.concatStringsSep ", " cfg.enabled}.
 
-          Pick one under `${moduleTreeName}.hardware.networking`.
+          Pick one under `${moduleTreeName}.networking.backend`.
         '';
       }
     ];
-
-
-    networking = lib.mkIf noWireless {
-      wireless.enable = lib.mkOverride noWirelessPriority false;
-
-      # Tell `networkmanager` to ignore wifi
-      networkmanager.unmanaged = [ "type:wifi" ];
-    };
   };
   # === Config ===
 }

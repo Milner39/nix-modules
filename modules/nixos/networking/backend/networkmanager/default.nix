@@ -17,7 +17,7 @@ let
 
 
   # Registered by whichever wireless module is enabled, `null` if none is
-  wirelessBackend = moduleTreeConfig.hardware.networking.wireless.backend;
+  wirelessBackend = moduleTreeConfig.networking.wireless.backend;
 in
 {
   # === Options ===
@@ -49,8 +49,8 @@ in
       wifi.powersave = false;
     };
 
-    # Register with the `networking` module
-    ${moduleTreeName}.hardware.networking.backends = [ "networkmanager" ];
+    # Register with the `backend` module
+    ${moduleTreeName}.networking.backend.enabled = [ "networkmanager" ];
   };
   # === Config ===
 }

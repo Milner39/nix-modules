@@ -39,7 +39,7 @@ in
     };
 
     # Register with the `wireless` module
-    ${moduleTreeName}.hardware.networking.wireless.backend = "iwd";
+    ${moduleTreeName}.networking.wireless.backend = "iwd";
   };
   # === Config ===
 }

@@ -77,8 +77,8 @@ in
       timeout = cfg.waitOnline.timeout;
     };
 
-    # Register with the `networking` module
-    ${moduleTreeName}.hardware.networking.backends = [ "networkd" ];
+    # Register with the `backend` module
+    ${moduleTreeName}.networking.backend.enabled = [ "networkd" ];
   };
   # === Config ===
 }
