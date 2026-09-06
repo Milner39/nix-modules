@@ -119,7 +119,7 @@ in
         "match-device" = "type:ethernet";
 
         "ipv4.method" = "auto";
-        "ipv4.link-local" = "fallback";
+        "ipv4.link-local" = 4;  # "fallback"
 
         "ipv6.method" = "auto";
         # No `ipv6.link-local` exists since it's mandatory anyway
