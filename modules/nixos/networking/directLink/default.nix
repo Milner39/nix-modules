@@ -13,6 +13,8 @@ let
   # Get module configuration
   cfg = moduleConfig;
 
+  pkgs_ = pkgs;
+
 
   # Registered by whichever backend module is enabled, `[]` if none is
   backends = moduleTreeConfig.networking.backend.enabled;
@@ -130,6 +132,7 @@ in
 
     services.avahi = lib.mkIf cfg.avahi.enable {
       enable = true;
+      package = pkgs_.avahi;
 
       # Resolve `.local` through NSS
       nssmdns4 = true;
