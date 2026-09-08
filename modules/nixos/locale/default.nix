@@ -30,7 +30,7 @@ in
       '';
       default = "uk";
       type = lib.types.str;
-    }
+    };
 
     "timeZone" = lib.mkOption {
       description = ''
@@ -38,7 +38,7 @@ in
       '';
       default = "Europe/London";
       type = lib.types.str;
-    }
+    };
 
     "locale" = lib.mkOption {
       description = ''
