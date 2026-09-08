@@ -34,6 +34,7 @@ in
 
     environment.systemPackages = with pkgs_; [
       niri
+      xwayland-satellite
     ];
 
     xdg.portal.extraPortals = with pkgs_; [
